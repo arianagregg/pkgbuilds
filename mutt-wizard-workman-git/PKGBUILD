@@ -1,15 +1,16 @@
-# Maintainer :       Kr1ss  $(tr +- .@ <<<'<kr1ss+x-yandex+com>')
+# Maintainer :       Ariana Gregg (lovetocode999 at tilde dot team)
+# Contributor :      Kr1ss  $(tr +- .@ <<<'<kr1ss+x-yandex+com>')
 # Upstream author :  Luke Smith <https://git{hub,lab}.com/lukesmithxyz/>
 
 
-pkgname=mutt-wizard-git
-_name="${pkgname%-git}"
+pkgname=mutt-wizard-workman-git
+_name="${pkgname%-workman-git}"
 
 pkgver() { git -C "$_name" describe --tags | sed 's/^v//;s/-/.r/;s/-/./g'; }
 pkgver=3.3.1.r138.g7129fa0
 pkgrel=1
 
-pkgdesc='Easily auto-configure neomutt and isync/mpop with safe passwords (IMAP/POP3/SMTP)'
+pkgdesc='Easily auto-configure neomutt and isync/mpop with safe passwords (IMAP/POP3/SMTP) (workman)'
 arch=('any')
 url="https://github.com/lukesmithxyz/$_name"
 license=('GPL3')
