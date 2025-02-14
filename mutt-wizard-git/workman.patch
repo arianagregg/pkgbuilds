@@ -1,0 +1,250 @@
+diff --git a/mw.1 b/mw.1
+index 4a136ee..c70b54a 100644
+--- a/mw.1
++++ b/mw.1
+@@ -183,22 +183,22 @@ The mutt-wizard's default settings add color to messages in the index and color
+ .TP
+ .B Movement with h/j/k/l
+ Use vim keys to move down
+-.I j
++.I n
+ or up
+-.I k
++.I e
+ in mail, while
+-.I l
++.I o
+ opens mail, then the attachment view, then an attachment, while
+-.I h
++.I y
+ is the reverse.
+ While mail is open, go to next or previous mail with
+-.I J
++.I N
+ and
+-.I K.
++.I E.
+ In the mail index,
+-.I d
++.I h
+ and
+-.I u
++.I f
+ go down and up by a half page and
+ .I gg
+ and
+@@ -209,18 +209,18 @@ go to the very top and very bottom.
+ If you have
+ .B notmuch
+ configured with your proper mail directory (see above), you may run
+-.I ctrl-f
++.I ctrl-t
+ to search for mail containing any given sequence.
+ Even without notmuch,
+-.I L
++.I O
+ limits mail, showing only those with the given sequence in the subject while
+ .I A
+ shows all mail (same as limiting to "all").
+ .TP
+ .B Deleting mail
+-.I D
++.I H
+ deletes mail, while
+-.I U
++.I F
+ undeletes it (type in mail number to get to deleted mail). Note that
+ .I S
+ saves your mailbox, finalizing deletion. If you have a
+@@ -230,24 +230,24 @@ box, deleted mail is moved there. If you want it to skip that and simply be dele
+ line in that account's muttrc.
+ .TP
+ .B Send mail
+-.I m
++.I l
+ creates a new mail message;
+-.I r
++.I w
+ replies to the selected message;
+-.I R
++.I W
+ replies all to the selected message and
+-.I f
++.I t
+ forwards the selected message.
+ .TP
+ .B Compose mail screen
+ Once you write mail and save the buffer you will be brought to the compose screen. Press
+ .I a
+ to add attachments, use
+-.I s/t/c/b/d
++.I s/b/m/v/h
+ to change the subject/to/CC/BCC/description. Press
+ .I S
+ to change the signature/encryption. Press
+-.I y
++.I j
+ to send the mail.
+ .TP
+ .B Saving and autocompleting email addresses with abook
+@@ -263,23 +263,23 @@ The
+ key can be paired with several other keys to automatically move to another mailbox: gi: Inbox; gs: Sent; gd: Drafts; ga: Archive; gS: Spam; gj: Junk; gt: Trash. These bindings will only be present for accounts that have the boxes in question. Instead of
+ .I g,
+ you can also press
+-.I C
+-to copy mail or
+ .I M
++to copy mail or
++.I L
+ to move mail to the same boxes.
+ .TP
+ .B Switching between accounts
+ mutt-wizard can configure as many as nine accounts each numbered by the lowest available number when configured. Press
+-.I i
++.I u
+ followed by an account's number to change to that account: i2, i5, etc.
+ .I ctrl-b
+ to open a menu to select a url you want to open in you browser.
+ .TP
+ .B Sidebar
+ mutt-wizard enables the sidebar by default which displays your account's boxes with mail tallies.
+-.I B
++.I V
+ will toggle the sidebar. Move up and down in it with
+-.I ctrl-k/j.
++.I ctrl-e/n.
+ Open a box with
+ .I ctrl-o.
+ .TP
+diff --git a/share/mutt-wizard.muttrc b/share/mutt-wizard.muttrc
+index f236bc4..597b318 100644
+--- a/share/mutt-wizard.muttrc
++++ b/share/mutt-wizard.muttrc
+@@ -35,73 +35,75 @@ bind index,pager g noop
+ bind index \Cf noop
+ bind index,pager M noop
+ bind index,pager C noop
++bind index,pager L noop
++bind index,pager u noop
+ 
+ # General rebindings
+ bind index gg first-entry
+-bind index j next-entry
+-bind index k previous-entry
++bind index n next-entry
++bind index e previous-entry
+ bind attach <return> view-mailcap
+-bind attach l view-mailcap
++bind attach o view-mailcap
+ bind editor <space> noop
+ bind index G last-entry
+-bind pager,attach h exit
+-bind pager j next-line
+-bind pager k previous-line
+-bind pager l view-attachments
+-bind index D delete-message
+-bind index U undelete-message
+-bind index L limit
++bind pager,attach y exit
++bind pager n next-line
++bind pager e previous-line
++bind pager o view-attachments
++bind index H delete-message
++bind index F undelete-message
++bind index O limit
+ bind index h noop
+-bind index l display-message
++bind index o display-message
+ bind index,query <space> tag-entry
+ #bind browser h goto-parent
+-macro browser h '<change-dir><kill-line>..<enter>' "Go to parent folder"
+-bind index,pager H view-raw-message
+-bind browser l select-entry
++macro browser y '<change-dir><kill-line>..<enter>' "Go to parent folder"
++bind index,pager Y view-raw-message
++bind browser o select-entry
+ bind browser gg top-page
+ bind browser G bottom-page
+ bind pager gg top
+ bind pager G bottom
+-bind index,pager,browser d half-down
+-bind index,pager,browser u half-up
++bind index,pager,browser h half-down
++bind index,pager,browser f half-up
+ bind index,pager S sync-mailbox
+-bind index,pager R group-reply
++bind index,pager W group-reply
+ bind index \031 previous-undeleted	# Mouse wheel
+ bind index \005 next-undeleted		# Mouse wheel
+ bind pager \031 previous-line		# Mouse wheel
+ bind pager \005 next-line		# Mouse wheel
+ bind editor <Tab> complete-query
+ 
+-macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
+-macro index,pager Mi ";<save-message>=INBOX<enter>" "move mail to inbox"
+-macro index,pager Ci ";<copy-message>=INBOX<enter>" "copy mail to inbox"
+-macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
+-macro index,pager Md ";<save-message>=Drafts<enter>" "move mail to drafts"
+-macro index,pager Cd ";<copy-message>=Drafts<enter>" "copy mail to drafts"
+-macro index,pager gj "<change-folder>=Junk<enter>" "go to junk"
+-macro index,pager Mj ";<save-message>=Junk<enter>" "move mail to junk"
+-macro index,pager Cj ";<copy-message>=Junk<enter>" "copy mail to junk"
+-macro index,pager gt "<change-folder>=Trash<enter>" "go to trash"
+-macro index,pager Mt ";<save-message>=Trash<enter>" "move mail to trash"
+-macro index,pager Ct ";<copy-message>=Trash<enter>" "copy mail to trash"
++macro index,pager gu "<change-folder>=INBOX<enter>" "go to inbox"
++macro index,pager Lu ";<save-message>=INBOX<enter>" "move mail to inbox"
++macro index,pager Mu ";<copy-message>=INBOX<enter>" "copy mail to inbox"
++macro index,pager gh "<change-folder>=Drafts<enter>" "go to drafts"
++macro index,pager Lh ";<save-message>=Drafts<enter>" "move mail to drafts"
++macro index,pager Mh ";<copy-message>=Drafts<enter>" "copy mail to drafts"
++macro index,pager gn "<change-folder>=Junk<enter>" "go to junk"
++macro index,pager Ln ";<save-message>=Junk<enter>" "move mail to junk"
++macro index,pager Mn ";<copy-message>=Junk<enter>" "copy mail to junk"
++macro index,pager gb "<change-folder>=Trash<enter>" "go to trash"
++macro index,pager Lb ";<save-message>=Trash<enter>" "move mail to trash"
++macro index,pager Mb ";<copy-message>=Trash<enter>" "copy mail to trash"
+ macro index,pager gs "<change-folder>=Sent<enter>" "go to sent"
+-macro index,pager Ms ";<save-message>=Sent<enter>" "move mail to sent"
+-macro index,pager Cs ";<copy-message>=Sent<enter>" "copy mail to sent"
++macro index,pager Ls ";<save-message>=Sent<enter>" "move mail to sent"
++macro index,pager Ms ";<copy-message>=Sent<enter>" "copy mail to sent"
+ macro index,pager ga "<change-folder>=Archive<enter>" "go to archive"
+-macro index,pager Ma ";<save-message>=Archive<enter>" "move mail to archive"
+-macro index,pager Ca ";<copy-message>=Archive<enter>" "copy mail to archive"
++macro index,pager La ";<save-message>=Archive<enter>" "move mail to archive"
++macro index,pager Ma ";<copy-message>=Archive<enter>" "copy mail to archive"
+ 
+ #set crypt_auto_sign = yes
+ #set crypt_opportunistic_encrypt = yes
+ #set pgp_self_encrypt = yes
+ #set pgp_default_key  = 'your@gpgemailaddre.ss'
+ macro index \eg "<enter-command>unset wait_key<enter><shell-escape>gpg --list-secret-keys; printf 'Enter email ID of user to publish: '; read eID; printf 'Enter fingerprint of GPG key to publish: '; read eFGPT; $prefix/libexec/gpg-wks-client --create \\\$eFGPT \\\$eID | msmtp --read-envelope-from --read-recipients -a $fulladdr<enter>"  "publish GPG key to WKS provider"
+-macro index \eh "<pipe-message>$prefix/libexec/gpg-wks-client --receive | msmtp --read-envelope-from --read-recipients -a $fulladdr<enter>" "confirm GPG publication"
++macro index \ey "<pipe-message>$prefix/libexec/gpg-wks-client --receive | msmtp --read-envelope-from --read-recipients -a $fulladdr<enter>" "confirm GPG publication"
+ 
+ macro index,pager a "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<return><pipe-message>abook --add-email<return><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<return>" "add the sender address to abook"
+ macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+-macro index O "<shell-escape>mailsync<enter>" "run mailsync to sync all mail"
+-macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>printf 'Enter a search term to find with notmuch: '; read x; echo \$x >\"\${XDG_CACHE_HOME:-\$HOME/.cache}/mutt_terms\"<enter><limit>~i \"\`notmuch search --output=messages \$(cat \"\${XDG_CACHE_HOME:-\$HOME/.cache}/mutt_terms\") | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/g for@a; s/\\$/\\\\\\$/g for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"
++macro index P "<shell-escape>mailsync<enter>" "run mailsync to sync all mail"
++macro index \Ct "<enter-command>unset wait_key<enter><shell-escape>printf 'Enter a search term to find with notmuch: '; read x; echo \$x >\"\${XDG_CACHE_HOME:-\$HOME/.cache}/mutt_terms\"<enter><limit>~i \"\`notmuch search --output=messages \$(cat \"\${XDG_CACHE_HOME:-\$HOME/.cache}/mutt_terms\") | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/g for@a; s/\\$/\\\\\\$/g for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"
+ macro index A "<limit>all\n" "show all messages (undo limit)"
+ 
+ # Sidebar mappings
+@@ -111,12 +113,10 @@ set sidebar_short_path = yes
+ set sidebar_next_new_wrap = yes
+ set mail_check_stats
+ set sidebar_format = '%D%?F? [%F]?%* %?N?%N/? %?S?%S?'
+-bind index,pager \Ck sidebar-prev
+-bind index,pager \Cj sidebar-next
++bind index,pager \Ce sidebar-prev
++bind index,pager \Cn sidebar-next
+ bind index,pager \Co sidebar-open
+-bind index,pager \Cp sidebar-prev-new
+-bind index,pager \Cn sidebar-next-new
+-bind index,pager B sidebar-toggle-visible
++bind index,pager V sidebar-toggle-visible
+ 
+ # Default index colors:
+ color index yellow default '.*'
